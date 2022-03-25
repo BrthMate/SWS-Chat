@@ -51,6 +51,8 @@ class MsgModel extends DbModel
                 foreach ($row as $key => $row) {
                     if($row["img"]!=""){
                         $img ="(Képet küldött)";
+                    }elseif ($row["img"]=="") {
+                        $img="";
                     }
                     $message ='<p class="card-text">'.$row["message"]." " .$img.'</p>
                         <span  style= "font-size: 13px;">'. substr($row["msg_created_at"],strpos($row["msg_created_at"], " "),-3).'</span>';
@@ -109,6 +111,8 @@ class MsgModel extends DbModel
                 foreach ($row as $key => $row) {
                     if($row["img"]!=""){
                         $img ="(Képet küldött)";
+                    }elseif ($row["img"]=="") {
+                        $img="";
                     }
                     if ($row['saw']==0) {
                         $message ='<p class="card-text"><strong>'.$row["message"]." ".$img.'</strong></p>
@@ -160,7 +164,7 @@ class MsgModel extends DbModel
 
         $output ="";
         $img="";
-        
+
         foreach ($statement->fetchAll() as $key => $value) {
             $stmt = self::prepare("SELECT message,msg_created_at,img FROM $tableName2 WHERE (incoming = {$value["id"]} AND outgoing = {$unequal['id']}) OR (incoming ={$unequal['id']}  AND outgoing ={$value["id"]} AND saw != $this->read AND incoming != {$unequal['id']}) ORDER BY msg_id DESC LIMIT 1");
             $stmt->execute();
@@ -171,6 +175,8 @@ class MsgModel extends DbModel
                 foreach ($row as $key => $row) {
                     if($row["img"]!=""){
                         $img ="(Képet küldött)";
+                    }elseif ($row["img"]=="") {
+                        $img="";
                     }
                     $message ='<p class="card-text">'.$row["message"]." ".$img.'</p>
                         <span style= "font-size: 13px;">'. substr($row["msg_created_at"],strpos($row["msg_created_at"], " "),-3).'</span>';
