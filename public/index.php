@@ -36,4 +36,6 @@ $app->Router->get('/message-ajax-unread',[SiteController::class,"unread"]);
 $app->Router->get('/message-ajax-chat',[SiteController::class,"chat"]);
 $app->Router->get('/message-ajax-chatuser',[SiteController::class,"userdetails"]);
 $app->Router->post('/message-ajax-sendmessage',[SiteController::class,"sendmessage"]);
+$app->Router->post('/message-ajax-updatedata',[SiteController::class,"updatedata"]);
+
 $app->run();

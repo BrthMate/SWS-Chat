@@ -12,6 +12,12 @@ class MsgModel extends DbModel
     public string $search="";
     public string $userId="";
     public string $sendText="";
+
+    public string $name="";
+    public string $email="";
+    public string $password="";
+    public string $imgName="";
+
     public static function tableName():string
     {
         return "users";
@@ -20,10 +26,18 @@ class MsgModel extends DbModel
     {
         return "messages";
     }
+    public function attributes(): array
+    {
+        return ['email', 'name', 'password'];
+    }
     public function rules() :array
     {
         return [
-            
+            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [
+                self::RULE_UNIQUE, 'class' => self::class
+            ]],
+            'name' => [self::RULE_REQUIRED],
+            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8]],
         ];
     }
     public function ShowusersALL($where,){
@@ -337,5 +351,14 @@ class MsgModel extends DbModel
                 VALUES (" . implode(",", $params) . ",NOW())");
         $statement->execute();
         return true;
+    }
+    public function updateUser($id){
+        $user = RegistModel::findOne(['id' => $id]);
+        RegistModel::UpdatePassword(['id' =>$user->id],["name"=>$this->name]);
+        RegistModel::UpdatePassword(['id' =>$user->id],["email"=>$this->email]); 
+        RegistModel::UpdatePassword(['id' =>$user->id],['password' => password_hash($this->password, PASSWORD_DEFAULT)]); 
+        if($this->imgName!=""){
+            RegistModel::UpdatePassword(['id' =>$user->id],['avatar' =>$this->imgName]); 
+        }
     } 
 }

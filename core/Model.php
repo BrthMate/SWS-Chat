@@ -72,6 +72,41 @@ abstract class Model
         }
         return empty($this->errors);
     }
+    public function validateToUpdate()
+    {
+        foreach ($this->rules() as $attribute => $rules) {
+            $value = $this->{$attribute};
+            foreach ($rules as $rule) {
+                $ruleName = $rule;
+                if (!is_string($rule)) {
+                    $ruleName = $rule[0];
+                }
+                if ($ruleName === self::RULE_REQUIRED && !$value) {
+                    $this->addErrorByRule($attribute, self::RULE_REQUIRED);
+                }
+                if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    $this->addErrorByRule($attribute, self::RULE_EMAIL);
+                }
+                if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
+                    $this->addErrorByRule($attribute, self::RULE_MIN, ['min' => $rule['min']]);
+                }
+                if ($ruleName === self::RULE_EXIST) {
+                    $className = $rule['class'];
+                    $uniqueAttr = $rule['attribute'] ?? $attribute;
+                    $tableName = $className::tableName();
+                    $db = Application::$app->db;
+                    $statement = $db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :$uniqueAttr");
+                    $statement->bindValue(":$uniqueAttr", $value);
+                    $statement->execute();
+                    $record = $statement->fetchObject();
+                    if ($record) {
+                        $this->addErrorByRule($attribute, self::RULE_EXIST);
+                    }
+                }
+            }
+        }
+        return empty($this->errors);
+    }
     public function errorMessages()
     {
         return [

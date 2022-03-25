@@ -1,8 +1,10 @@
 <?php
-use app\core\Application;
-if(Application::isGuest()){
-  header ("location: /");
-}
+  use app\core\Application;
+  use app\core\form\Form;
+  if(Application::isGuest()){
+    header ("location: /");
+  }
+  $Form = new Form();
 ?>
   <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/message.css">
@@ -86,24 +88,31 @@ if(Application::isGuest()){
                     <button class="btn-close text-reset" type="button" data-bs-dismiss="modal"></button>
                   </div>
                   <div class="modal-body">
-                    <form >
+                    <form method="post" class="updateData">
+                    <?php if(!empty($model->error()[0] || count($model->error())>1)) {?>
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <?php
+                          foreach ($model->error() as $key => $value) {
+                            echo $value. " ";
+                          }           
+                        ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    <?php }?>
                       <div class="form-group mb-3 overflow-hidden">
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                        <input type="file"  name="img" accept="image/*" class="form-control-file" id="exampleFormControlFile1">
                       </div>
                       <div class="form-group mb-3">
-                        <input type="text" class="form-control" placeholder="Enter name">
+                      <?php echo $Form->field($model,'name',"form-control","","Enter name","text")?>
                       </div>
                       <div class="form-group mb-3">
-                        <input type="email" class="form-control" placeholder="Enter email">
+                      <?php echo $Form->field($model,'email',"form-control","","Enter email","email")?>
                       </div>
                       <div class="form-group mb-3">
-                        <input type="password" class="form-control" placeholder="Enter password">
-                      </div>
-                      <div class="form-group mb-3">
-                        <input type="password" class="form-control" placeholder="Enter comfirm password">
+                      <?php echo $Form->field($model,'password',"form-control","","Enter password","password")?>
                       </div>
                         <input type="password" class="form-control" id="token" value="<?php echo( Application::UserData());?>" placeholder="Id" hidden>
-                      <button class="modal-btn" type="button">Change</button>
+                        <button class="modal-btn" id="changeData" type="button">Change</button>
                     </form>
                   </div>
             

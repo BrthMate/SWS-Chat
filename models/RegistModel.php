@@ -12,7 +12,7 @@ class RegistModel extends DbModel
     //private $height = 100;
     //private $width = 100;
 
-    public string $avatar = "image/annie.PNG";
+    public string $avatar = "avatar/annie.PNG";
     public string $email="";
     public string $name="";
     public string $password="";

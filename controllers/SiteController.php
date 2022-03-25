@@ -11,8 +11,28 @@ class SiteController extends BaseController{
 
     public function message()
     {
-        $params=[];
-        return $this->render('message',$params);
+        $MsgModel= new MsgModel();
+        return $this->render('message',[
+            "model" => $MsgModel
+        ]);
+    }
+    public function updatedata(Request $request)
+    {
+        $MsgModel= new MsgModel();
+        if($request->isPost()){
+            $MsgModel->loadData($request->getBody());
+            if($MsgModel->validateToUpdate()){
+                $data=json_decode(json_encode(Application::$app->user), true);
+                if (isset($_FILES["img"]["name"]) && !empty($_FILES["img"]["name"])) {
+                    $file=time().$_FILES["img"]['name'];
+                    move_uploaded_file($_FILES["img"]['tmp_name'], "../public/avatar/".$file);
+                    $MsgModel->imgName="../avatar/".$file;
+                }
+                $MsgModel->updateUser($data["id"]);
+            }else{
+                echo "szarvagy";
+            }
+        }
     }
     public function search(Request $request){
         $MsgModel= new MsgModel();

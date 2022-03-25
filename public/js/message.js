@@ -340,6 +340,29 @@ sendInput.addEventListener("keyup",(event) => {
     }
 });
 
+const changeData =document.getElementById("changeData");
+
+changeData.addEventListener("click",() => {
+
+    const sendFromClick =  document.querySelector('.updateData');
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "../message-ajax-updatedata", true);
+ 
+        xhr.onload = ()=>{
+            if(xhr.readyState === XMLHttpRequest.DONE){
+                if(xhr.status === 200){
+                    let data = xhr.response;
+                    if (data != ""){
+                        console.log(data);
+                    }
+                }
+            }
+        }
+        let formData = new FormData(sendFromClick);
+        xhr.send(formData);
+});
+
 const upload = document.getElementById('fileid');
 document.getElementById('buttonid').addEventListener('click', openDialog);
 
