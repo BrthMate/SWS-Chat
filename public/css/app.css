@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Squada+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+:root{
+
+    --VlueDianne:#5a60ff;
+    --JungleGreen:#383b9b;
+    --SandyBrown:#F4A261;
+    --Black: black;
+    --white: white;
+}
+.darkmode{
+    --VlueDianne:#5a60ff;
+    --JungleGreen:#383b9b;
+    --SandyBrown:#F4A261;
+    --Black: #ffebd2;
+    --white: #212529;
+}
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+nav{
+    box-shadow: rgb(255 255 255 / 0%) 0px 5px 8px inset, var(--JungleGreen) 0px 0px 15px;
+}
+.navbar-toggler:focus {
+    color: unset;
+    border-color: unset ;
+    box-shadow: unset;
+}
+.navbar-toggler {
+    color: unset;
+    border:unset;
+    border-color: unset;
+}
+button:focus{
+    border: unset;
+}
+.btn-close .text-reset{
+    border: unset;
+}
+button {
+	border-radius: 20px;
+	background-color: var(--VlueDianne);
+    	border: none;
+	color: var(--white);
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--white); 
+}
+::-webkit-scrollbar-thumb {
+  background: var(--SandyBrown); 
+  border-radius: 15px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--JungleGreen); 
+}
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
+.form-control:focus {
+  box-shadow: none;
+  background: none;
+
+}
+button {
+  outline: none;
+}
+.form-control{
+  border-color:var(--VlueDianne)
+}
+.is-invalid{
+ /* background-clip: content-box;*/
+}

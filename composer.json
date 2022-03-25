@@ -1,0 +1,13 @@
+{
+    "name": "chat/chat",
+    "autoload": {
+        "psr-4": {
+            "app\\":"./",
+            "MyApp\\": "core"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.4",
+        "cboden/ratchet": "^0.4"
+    }
+}
