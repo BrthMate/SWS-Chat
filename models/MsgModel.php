@@ -103,7 +103,7 @@ class MsgModel extends DbModel
         $attributesAND = array_keys($AND);
         $sqlOR = implode(" OR ", array_map(fn($attr) => "$attr = :$attr", $attributesOR));
         $sqlAND = implode(" AND ", array_map(fn($attr) => "$attr != :$attr", $attributesAND));
-        $statement = self::prepare("SELECT name,avatar,id,status FROM $tableName INNER JOIN $tableName2  ON $tableName.id = $tableName2.incoming OR $tableName.id = $tableName2.outgoing  WHERE ($sqlOR) AND $sqlAND GROUP BY name");
+        $statement = self::prepare("SELECT name,avatar,id,status FROM $tableName INNER JOIN $tableName2  ON $tableName.id = $tableName2.incoming OR $tableName.id = $tableName2.outgoing  WHERE ($sqlOR) AND $sqlAND GROUP BY id");
         foreach ($OR as $key => $item) {
             $statement->bindValue(":$key", $item);
         }
@@ -167,7 +167,7 @@ class MsgModel extends DbModel
         $attributesEqual = array_keys($equal);
         $WHEREunequal = implode(" AND ", array_map(fn($attr) => "$attr != :$attr", $attributesUnequal));
         $WHEREequal = implode(" OR ", array_map(fn($attr) => "$attr = :$attr", $attributesEqual));
-        $statement = self::prepare("SELECT id,name,avatar,status FROM $tableName INNER JOIN $tableName2  ON $tableName.id = $tableName2.incoming OR $tableName.id = $tableName2.outgoing  WHERE $WHEREunequal AND ($WHEREequal)  AND  incoming != {$unequal['id']} GROUP BY name");
+        $statement = self::prepare("SELECT id,name,avatar,status FROM $tableName INNER JOIN $tableName2  ON $tableName.id = $tableName2.incoming OR $tableName.id = $tableName2.outgoing  WHERE $WHEREunequal AND ($WHEREequal)  AND  incoming != {$unequal['id']} GROUP BY id");
         foreach ($unequal as $key => $item) {
             $statement->bindValue(":$key", $item);
         }
