@@ -354,7 +354,7 @@ changeData.addEventListener("click",() => {
                 if(xhr.status === 200){
                     let data = xhr.response;
                     if (data != ""){
-                        console.log(data);
+                        document.querySelector(".error-box").innerHTML=data;
                     }
                 }
             }
@@ -362,6 +362,7 @@ changeData.addEventListener("click",() => {
         let formData = new FormData(sendFromClick);
         xhr.send(formData);
 });
+document.querySelector(".settings-button").addEventListener("click",() => {document.querySelector(".error-box").innerHTML="";})
 
 const upload = document.getElementById('fileid');
 document.getElementById('buttonid').addEventListener('click', openDialog);

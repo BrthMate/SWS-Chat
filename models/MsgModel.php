@@ -358,7 +358,8 @@ class MsgModel extends DbModel
         RegistModel::UpdatePassword(['id' =>$user->id],["email"=>$this->email]); 
         RegistModel::UpdatePassword(['id' =>$user->id],['password' => password_hash($this->password, PASSWORD_DEFAULT)]); 
         if($this->imgName!=""){
-            RegistModel::UpdatePassword(['id' =>$user->id],['avatar' =>$this->imgName]); 
+            RegistModel::UpdatePassword(['id' =>$user->id],['avatar' =>$this->imgName]);
+            unlink(substr($user->avatar,3)); 
         }
     } 
 }

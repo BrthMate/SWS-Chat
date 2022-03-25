@@ -20,6 +20,7 @@ class SiteController extends BaseController{
     {
         $MsgModel= new MsgModel();
         if($request->isPost()){
+            $output="";
             $MsgModel->loadData($request->getBody());
             if($MsgModel->validateToUpdate()){
                 $data=json_decode(json_encode(Application::$app->user), true);
@@ -29,9 +30,18 @@ class SiteController extends BaseController{
                     $MsgModel->imgName="../avatar/".$file;
                 }
                 $MsgModel->updateUser($data["id"]);
+                $output .='<div class="alert alert-dismissible fade show" role="alert">Sikeres módosítás</div>';
             }else{
-                echo "szarvagy";
+                if (!empty($MsgModel->error()[0] || count($MsgModel->error())>1)) {
+                    $output .='
+                    <div class="alert alert-dismissible fade show" role="alert">';
+                        foreach ($MsgModel->error() as $key => $value) {
+                          $output .= $value. " ";
+                        }          
+                    $output .= '</div>';
+                }
             }
+            return $output;
         }
     }
     public function search(Request $request){
