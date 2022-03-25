@@ -16,14 +16,20 @@ const mediaConst = {
     audio: true,
     video: true
 }
+const config ={
+    iceServer:[
+        {urls:'stun:stun1.l.google.com:19302'},
+    ]
+}
 const options ={
-    offerToReceiveVideo:1
+    offerToReceiveVideo:1,
+    offerToReceiveAudio:1
 }
 let pc;
 let localStream;
 function getConn(){
     if(!pc){
-        pc = new RTCPeerConnection();
+        pc = new RTCPeerConnection(config);
     }
 }
 async function getCam(){
@@ -60,11 +66,11 @@ conn.onmessage = async e => {
     callBox.children[1].children[0].children[0].setAttribute("src",profileImage);
     callBox.children[1].children[0].children[1].children[0].innerHTML=username;
     callBox.children[1].children[1].children[0].setAttribute("data-user",by);
-
-    if(sendTo  === undefined || sendTo == ""){
-        sendTo=by;
-    }
+    
+    //sendTo nem jó
+    console.log(by);
     console.log(sendTo)
+
     switch(type){
         case 'client-candidate':
             if(pc.localDescription){
@@ -76,7 +82,7 @@ conn.onmessage = async e => {
                 await getConn();
             }
             if(pc.iceConnectionState == "connected"){
-                send('client-already-oncall');
+                send('client-already-oncall',null,by);
             }else{
                 messages.style.webkitFilter = "blur(4px)";
                 callBox.classList.add("d-flex");
@@ -179,10 +185,17 @@ mic.addEventListener("click", function(){
     if(micClick==false){
         mic.children[0].classList.add("d-none");
         mic.children[1].classList.remove("d-none");
+
+        const videoTrack = localStream.getTracks().find(track => track.kind =="audio");
+        videoTrack.enabled= false; 
+
         micClick=true;        
     }else{
         mic.children[0].classList.remove("d-none");
         mic.children[1].classList.add("d-none");
+
+        const videoTrack = localStream.getTracks().find(track => track.kind =="audio");
+        videoTrack.enabled= true; 
 
         micClick=false;
     }
@@ -192,12 +205,14 @@ cam.addEventListener("click", function(){
     if(camClick==false){
         cam.children[0].classList.add("d-none");
         cam.children[1].classList.remove("d-none");
-
+        const videoTrack = localStream.getTracks().find(track => track.kind =="video");
+        videoTrack.enabled= false; 
         camClick=true;
     }else{
         cam.children[0].classList.remove("d-none");
         cam.children[1].classList.add("d-none");
-
+        const videoTrack = localStream.getTracks().find(track => track.kind =="video");
+        videoTrack.enabled= true; 
         camClick=false;
     }
 });
